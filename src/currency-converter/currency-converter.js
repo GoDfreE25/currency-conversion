@@ -8,6 +8,7 @@ const CurrencyConverter = () => {
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toAmount, setToAmount] = useState(0);
   const [toCurrency, setToCurrency] = useState("UAH");
+  const [isFromAmountChanged, setIsFromAmountChanged] = useState(true);
 
   useEffect(() => {
     getExchangeCourse()
@@ -29,42 +30,43 @@ const CurrencyConverter = () => {
   const convertCurrency = useCallback(
     (from, to, amount) => {
       if (!rates[from] || !rates[to]) return 1;
-      return (amount * rates[from]) / rates[to];
+      return ((amount * rates[from]) / rates[to]).toFixed(2);
     },
     [rates]
   );
 
-  const handleFromAmountChange = useCallback(
-    (amount) => {
-      setFromAmount(amount);
-      setToAmount(convertCurrency(fromCurrency, toCurrency, amount));
-    },
-    [fromCurrency, toCurrency, convertCurrency]
-  );
+  useEffect(() => {
+    if (isFromAmountChanged) {
+      setToAmount(convertCurrency(fromCurrency, toCurrency, fromAmount));
+    }
+  }, [fromAmount, fromCurrency, toCurrency, isFromAmountChanged, convertCurrency]);
 
-  const handleFromCurrencyChange = useCallback(
-    (currency) => {
-      setFromCurrency(currency);
-      setToAmount(convertCurrency(currency, toCurrency, fromAmount));
-    },
-    [toCurrency, fromAmount, convertCurrency]
-  );
-
-  const handleToAmountChange = useCallback(
-    (amount) => {
-      setToAmount(amount);
-      setFromAmount(convertCurrency(toCurrency, fromCurrency, amount));
-    },
-    [fromCurrency, toCurrency, convertCurrency]
-  );
-
-  const handleToCurrencyChange = useCallback(
-    (currency) => {
-      setToCurrency(currency);
+  useEffect(() => {
+    if (!isFromAmountChanged) {
       setFromAmount(convertCurrency(toCurrency, fromCurrency, toAmount));
-    },
-    [convertCurrency, toCurrency, fromCurrency, toAmount]
-  );
+    }
+  }, [toAmount, toCurrency, fromCurrency, isFromAmountChanged, convertCurrency]);
+
+  const handleFromAmountChange = useCallback((amount) => {
+    setFromAmount(amount);
+    setIsFromAmountChanged(true);
+  }, []);
+
+  const handleFromCurrencyChange = useCallback((currency) => {
+    setFromCurrency(currency);
+    setIsFromAmountChanged(true);
+  }, []);
+
+  const handleToAmountChange = useCallback((amount) => {
+    setToAmount(amount);
+    setIsFromAmountChanged(false);
+  }, []);
+
+  const handleToCurrencyChange = useCallback((currency) => {
+    setToCurrency(currency);
+    setIsFromAmountChanged(false);
+  }, []);
+
 
   return (
     <div>
