@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getExchangeCourse } from "../api/api";
 import CurrencyInputWithSelect from "./component/currency-input-with-select/currency-input-with-select";
+import "./currency-converter.scss";
+import { Typography } from "@mui/material";
 
 const CurrencyConverter = () => {
   const [rates, setRates] = useState({});
   const [fromAmount, setFromAmount] = useState(0);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toAmount, setToAmount] = useState(0);
-  const [toCurrency, setToCurrency] = useState("UAH");
+  const [toCurrency, setToCurrency] = useState("UKR");
   const [isFromAmountChanged, setIsFromAmountChanged] = useState(true);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const CurrencyConverter = () => {
             return acc;
           },
           {
-            UAH: 1,
+            UKR: 1,
           }
         );
         setRates(ratesMap);
@@ -40,13 +42,25 @@ const CurrencyConverter = () => {
     if (isFromAmountChanged) {
       setToAmount(convertCurrency(fromCurrency, toCurrency, fromAmount));
     }
-  }, [fromAmount, fromCurrency, toCurrency, isFromAmountChanged, convertCurrency]);
+  }, [
+    fromAmount,
+    fromCurrency,
+    toCurrency,
+    isFromAmountChanged,
+    convertCurrency,
+  ]);
 
   useEffect(() => {
     if (!isFromAmountChanged) {
       setFromAmount(convertCurrency(toCurrency, fromCurrency, toAmount));
     }
-  }, [toAmount, toCurrency, fromCurrency, isFromAmountChanged, convertCurrency]);
+  }, [
+    toAmount,
+    toCurrency,
+    fromCurrency,
+    isFromAmountChanged,
+    convertCurrency,
+  ]);
 
   const handleFromAmountChange = useCallback((amount) => {
     setFromAmount(amount);
@@ -68,11 +82,17 @@ const CurrencyConverter = () => {
     setIsFromAmountChanged(false);
   }, []);
 
-
   return (
-    <div>
-      <h1>Currency Converter</h1>
-      <div>
+    <div className="main_container">
+      <Typography
+        fontFamily={"Effra, Helvetica, Arial, sans-serif"}
+        fontSize={"35px"}
+        fontWeight={"700"}
+        lineHeight={" 48px"}
+      >
+        Currency Converter
+      </Typography>
+      <div className="currency_container">
         <CurrencyInputWithSelect
           amount={fromAmount}
           currency={fromCurrency}

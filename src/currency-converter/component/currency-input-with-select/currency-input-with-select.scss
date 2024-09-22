@@ -1,0 +1,19 @@
+.input_container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+}
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.select {
+  .MuiSelect-select {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}

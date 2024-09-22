@@ -31,22 +31,12 @@ const Header = () => {
         </Typography>
         <div className="currency_container">
           {filteredCurrencies.map((curr) => (
-            <Card key={curr.cc}>
-              <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "10px",
-                  alignItems: "center",
-                  paddingBottom: '16px !important',
-                }}
-              >
-                {flags[curr.cc] && <Flag country={flags[curr.cc]} size={40} />}
-                <Typography gutterBottom sx={{ fontSize: 16, margin: "0" }}>
-                  {curr.cc} - {Math.round(curr.rate * 100) / 100}
-                </Typography>
-              </CardContent>
-            </Card>
+            <div className="card">
+              {flags[curr.cc] && <Flag country={flags[curr.cc]} size={40} />}
+              <Typography gutterBottom sx={{ fontSize: 16, margin: "0" }}>
+                {curr.cc} - {Math.round(curr.rate * 100) / 100}
+              </Typography>
+            </div>
           ))}
         </div>
       </div>
