@@ -46,7 +46,7 @@ const CurrencyInputWithSelect = ({
       value={amount}
       onChange={(e) => {
         const value = e.target.value;
-        onAmountChange(parseFloat(value));
+        onAmountChange(value === "" ? "" : parseFloat(value));
       }}
       onBlur={() => {
         if (amount === "") {
