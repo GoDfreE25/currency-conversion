@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { getExchangeCourse } from "../api/api";
+import { getExchangeCourse } from "../../api/api";
 import CurrencyInputWithSelect from "./component/currency-input-with-select/currency-input-with-select";
 import "./currency-converter.scss";
 import { Typography } from "@mui/material";
+import { getRoundedResult } from "../../helpers/get-rounded-result";
+import { FIATS } from "../../constants/fiats";
+
+const DEFAULT_AMOUNT_VALUE = 0;
 
 const CurrencyConverter = () => {
   const [rates, setRates] = useState({});
-  const [fromAmount, setFromAmount] = useState(0);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toAmount, setToAmount] = useState(0);
-  const [toCurrency, setToCurrency] = useState("UKR");
+  const [fromAmount, setFromAmount] = useState(DEFAULT_AMOUNT_VALUE);
+  const [fromCurrency, setFromCurrency] = useState(FIATS.USD);
+  const [toAmount, setToAmount] = useState(DEFAULT_AMOUNT_VALUE);
+  const [toCurrency, setToCurrency] = useState(FIATS.UKR);
   const [isFromAmountChanged, setIsFromAmountChanged] = useState(true);
 
   useEffect(() => {
@@ -33,7 +37,7 @@ const CurrencyConverter = () => {
     (fromCurrency, toCurrency, amount) => {
       const result = (amount * rates[fromCurrency]) / rates[toCurrency];
 
-      return Math.round(result * 100) / 100;
+      return getRoundedResult(result);
     },
     [rates]
   );
@@ -41,46 +45,37 @@ const CurrencyConverter = () => {
   useEffect(() => {
     if (isFromAmountChanged) {
       setToAmount(convertCurrency(fromCurrency, toCurrency, fromAmount));
-    }
-  }, [
-    fromAmount,
-    fromCurrency,
-    toCurrency,
-    isFromAmountChanged,
-    convertCurrency,
-  ]);
-
-  useEffect(() => {
-    if (!isFromAmountChanged) {
+    } else {
       setFromAmount(convertCurrency(toCurrency, fromCurrency, toAmount));
     }
   }, [
+    fromAmount,
     toAmount,
-    toCurrency,
     fromCurrency,
+    toCurrency,
     isFromAmountChanged,
     convertCurrency,
   ]);
 
-  const handleFromAmountChange = useCallback((amount) => {
+  const handleFromAmountChange = (amount) => {
     setFromAmount(amount);
     setIsFromAmountChanged(true);
-  }, []);
+  };
 
-  const handleFromCurrencyChange = useCallback((currency) => {
+  const handleFromCurrencyChange = (currency) => {
     setFromCurrency(currency);
     setIsFromAmountChanged(true);
-  }, []);
+  };
 
-  const handleToAmountChange = useCallback((amount) => {
+  const handleToAmountChange = (amount) => {
     setToAmount(amount);
     setIsFromAmountChanged(false);
-  }, []);
+  };
 
-  const handleToCurrencyChange = useCallback((currency) => {
+  const handleToCurrencyChange = (currency) => {
     setToCurrency(currency);
     setIsFromAmountChanged(false);
-  }, []);
+  };
 
   return (
     <div className="main_container">
