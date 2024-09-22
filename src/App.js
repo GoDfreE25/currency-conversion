@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import CurrencyConverter from "./currency-converter/currency-converter";
 import Header from "./header/header";
 

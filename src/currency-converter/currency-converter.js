@@ -28,9 +28,10 @@ const CurrencyConverter = () => {
   }, []);
 
   const convertCurrency = useCallback(
-    (from, to, amount) => {
-      if (!rates[from] || !rates[to]) return 1;
-      return ((amount * rates[from]) / rates[to]).toFixed(2);
+    (fromCurrency, toCurrency, amount) => {
+      const result = (amount * rates[fromCurrency]) / rates[toCurrency];
+
+      return Math.round(result * 100) / 100;
     },
     [rates]
   );

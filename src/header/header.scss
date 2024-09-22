@@ -1,0 +1,19 @@
+.header {
+  padding: 20px;
+  width: 80%;
+  background-color: white;
+  border-radius: 32px;
+  box-shadow: 0 10px 20px 0 #b3bbc673;
+  &_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+}
+.currency_container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
