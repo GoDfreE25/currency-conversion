@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { getExchangeCourse } from "../../api/api";
 import CurrencyInputWithSelect from "./component/currency-input-with-select/currency-input-with-select";
 import "./currency-converter.scss";
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { getRoundedResult } from "../../helpers/get-rounded-result";
 import { FIATS } from "../../constants/fiats";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 const DEFAULT_AMOUNT_VALUE = 0;
 
@@ -77,6 +78,19 @@ const CurrencyConverter = () => {
     setIsFromAmountChanged(false);
   };
 
+  const handleCurrencySwap = () => {
+    const swappedFromCurrency = toCurrency;
+    const swappedToCurrency = fromCurrency;
+    const swappedFromAmount = toAmount;
+    const swappedToAmount = fromAmount;
+
+    setFromCurrency(swappedFromCurrency);
+    setToCurrency(swappedToCurrency);
+    setFromAmount(swappedFromAmount);
+    setToAmount(swappedToAmount);
+    setIsFromAmountChanged(!isFromAmountChanged);
+  };
+
   return (
     <div className="main_container">
       <Typography
@@ -94,6 +108,9 @@ const CurrencyConverter = () => {
           onAmountChange={handleFromAmountChange}
           onCurrencyChange={handleFromCurrencyChange}
         />
+        <IconButton sx={{ height: "40px" }} onClick={handleCurrencySwap}>
+          <SwapHorizIcon />
+        </IconButton>
         <CurrencyInputWithSelect
           amount={toAmount}
           currency={toCurrency}
