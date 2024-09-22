@@ -1,4 +1,4 @@
-# Movie List
+# Currency Converter
 
 - [Currency converter](https://godfree25.github.io/currency-conversion/)
 
